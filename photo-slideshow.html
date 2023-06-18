@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>循环切换照片</title>
+  <style>
+    #photo {
+      width: 400px;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <img id="photo" src="" alt="照片">
+
+  <script>
+    // 图片路径数组
+    var photos = [
+      "photo1.jpg",
+      "photo2.jpg",
+      "photo3.jpg",
+      "photo4.jpg",
+      "photo5.jpg",
+      "photo6.jpg",
+    ];
+
+    var currentPhotoIndex = 0; // 当前照片索引
+
+    var photoElement = document.getElementById("photo"); // 图片元素
+
+    function switchPhoto() {
+      // 切换到下一张照片
+      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+      var nextPhoto = photos[currentPhotoIndex];
+      photoElement.src = nextPhoto; // 更新图片路径
+    }
+
+    // 初始显示第一张照片
+    photoElement.src = photos[currentPhotoIndex];
+
+    // 每隔2秒切换一次照片
+    setInterval(switchPhoto, 1000);
+  </script>
+</body>
+</html>
+
