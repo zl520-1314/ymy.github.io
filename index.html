@@ -15,21 +15,14 @@
 
   <script>
     var photoElement = document.getElementById("photo"); // 图片元素
-    var photos = []; // 图片路径数组
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "./photo/", true); // 替换为你的文件夹路径
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        var files = xhr.responseText.split("\n"); // 获取文件夹中的文件列表
-
-        // 遍历文件列表，筛选出图片文件
-        for (var i = 0; i < files.length; i++) {
-          var file = files[i].trim();
-          if (file.endsWith(".jpg") || file.endsWith(".jpeg") || file.endsWith(".png") || file.endsWith(".gif")) {
-            photos.push(file); // 添加图片文件路径到数组中
-          }
-        }
+    var photos = [
+      "photo/photo1.jpg",
+      "photo/photo2.jpg",
+      "photo/photo3.jpg",
+      "photo/photo4.jpg",
+      "photo/photo5.jpg",
+      "photo/photo6.jpg",
+    ]; // 图片路径数组
 
         // 初始显示第一张照片
         photoElement.src = photos[0];
@@ -41,8 +34,6 @@
           var nextPhoto = photos[currentPhotoIndex];
           photoElement.src = nextPhoto;
         }, 2000);
-      }
-    };
     xhr.send();
   </script>
 </body>
