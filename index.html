@@ -19,12 +19,32 @@
     .fade-leave-to {
       opacity: 0;
     }
+
+    #progressBar {
+      width: 100%;
+      height: 10px;
+      background-color: #ccc;
+    }
+
+    #progress {
+      width: 0;
+      height: 100%;
+      background-color: #ff0000;
+    }
   </style>
 </head>
 <body>
   <img id="photo" src="" alt="照片">
   <!-- 背景音乐 -->
-  <audio id="bgMusic" src="./music/张杰 - 想见你想见你想见你 (Live).mp3" loop autoplay></audio>
+  <audio id="bgMusic" src="./music/张杰 - 想见你想见你想见你 (Live).mp3" loop></audio>
+  <button id="playButton">播放</button>
+  <button id="pauseButton">暂停</button>
+  <button id="prevButton">上一首</button>
+  <button id="nextButton">下一首</button>
+  <div id="progressBar">
+    <div id="progress"></div>
+  </div>
+
   <script>
     var photoElement = document.getElementById("photo"); // 图片元素
     var photos = [
@@ -55,6 +75,41 @@
       photoElement.src = nextPhoto;
       photoElement.classList.add("fade-enter-active");
     }, 2000);
+
+    var playButton = document.getElementById("playButton");
+    var pauseButton = document.getElementById("pauseButton");
+    var prevButton = document.getElementById("prevButton");
+    var nextButton = document.getElementById("nextButton");
+    var bgMusic = document.getElementById("bgMusic");
+    var progressBar = document.getElementById("progressBar");
+    var progress = document.getElementById("progress");
+
+    playButton.addEventListener("click", function() {
+      bgMusic.play();
+    });
+
+    pauseButton.addEventListener("click", function() {
+      bgMusic.pause();
+    });
+
+    prevButton.addEventListener("click", function() {
+      currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+      var prevPhoto = photos[currentPhotoIndex];
+      photoElement.src = prevPhoto;
+    });
+
+    nextButton.addEventListener("click", function() {
+      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+      var nextPhoto = photos[currentPhotoIndex];
+      photoElement.src = nextPhoto;
+    });
+
+    bgMusic.addEventListener("timeupdate", function() {
+      var currentTime = bgMusic.currentTime;
+      var duration = bgMusic.duration;
+      var progressPercent = (currentTime / duration) * 100;
+      progress.style.width = progressPercent + "%";
+    });
   </script>
 </body>
 </html>
