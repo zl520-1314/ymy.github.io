@@ -14,32 +14,36 @@
   <img id="photo" src="" alt="照片">
 
   <script>
-    // 图片路径数组
-    var photos = [
-      "photo1.jpg",
-      "photo2.jpg",
-      "photo3.jpg",
-      "photo4.jpg",
-      "photo5.jpg",
-      "photo6.jpg"
-    ];
-
-    var currentPhotoIndex = 0; // 当前照片索引
-
     var photoElement = document.getElementById("photo"); // 图片元素
+    var photos = []; // 图片路径数组
 
-    function switchPhoto() {
-      // 切换到下一张照片
-      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
-      var nextPhoto = photos[currentPhotoIndex];
-      photoElement.src = nextPhoto; // 更新图片路径
-    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "./photo/", true); // 替换为你的文件夹路径
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var files = xhr.responseText.split("\n"); // 获取文件夹中的文件列表
 
-    // 初始显示第一张照片
-    photoElement.src = photos[currentPhotoIndex];
+        // 遍历文件列表，筛选出图片文件
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i].trim();
+          if (file.endsWith(".jpg") || file.endsWith(".jpeg") || file.endsWith(".png") || file.endsWith(".gif")) {
+            photos.push(file); // 添加图片文件路径到数组中
+          }
+        }
 
-    // 每隔2秒切换一次照片
-    setInterval(switchPhoto, 1000);
+        // 初始显示第一张照片
+        photoElement.src = photos[0];
+
+        // 每隔2秒切换一次照片
+        var currentPhotoIndex = 0;
+        setInterval(function() {
+          currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+          var nextPhoto = photos[currentPhotoIndex];
+          photoElement.src = nextPhoto;
+        }, 2000);
+      }
+    };
+    xhr.send();
   </script>
 </body>
 </html>
